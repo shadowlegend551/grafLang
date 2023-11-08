@@ -174,6 +174,10 @@ std::vector<Token> Tokenizer::tokenize()
         switch(character)
         {
 
+        case '!':
+            current_token = create_token(GENERIC_UNARY_OPERATOR,
+                                            LOGICAL_NOT);
+
         // String literal.
         case '"':
             tokenize_string_literal();
@@ -188,9 +192,9 @@ std::vector<Token> Tokenizer::tokenize()
                                                 ASSIGNMENT_ADD);
                 advance();
             }
-            else if(next_character == '+')
+            else if(next_character == '+')  // ++
             {
-                current_token = create_token(GENERIC_BINARY_OPERATOR,
+                current_token = create_token(GENERIC_UNARY_OPERATOR,
                                                 LOGICAL_INCREMENT);
             }
             else  // +
@@ -209,7 +213,7 @@ std::vector<Token> Tokenizer::tokenize()
             }
             else if(next_character == '-')  // --
             {
-                current_token = create_token(GENERIC_BINARY_OPERATOR,
+                current_token = create_token(GENERIC_UNARY_OPERATOR,
                                                 LOGICAL_DECREMENT);
                 advance();
             }

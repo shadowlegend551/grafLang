@@ -45,8 +45,8 @@ typedef enum TokenType
 
     // Logical operators.
     LOGICAL_NOT,               // !
-    LOGICAL_INCREMENT,         // ++ (only postfix)
-    LOGICAL_DECREMENT,         // -- (only postfix)
+    LOGICAL_INCREMENT,         // ++ (only prefix)
+    LOGICAL_DECREMENT,         // -- (only prefix)
 
 /* ----------------------------*/
 
