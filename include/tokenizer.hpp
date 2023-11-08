@@ -9,7 +9,10 @@ class Tokenizer
 {
     private:
         std::string character_stream;
-        char current_character;
+        char character;
+        Token current_token;
+        std::string literal_value;
+
         unsigned int i;
 
         char advance();
@@ -20,7 +23,11 @@ class Tokenizer
 
         char peek();
 
+        void tokenize_numeric_literal();
+
         char get_escape_character();
+
+        void tokenize_string_literal();
 
     public:
         std::vector<Token> tokenize();

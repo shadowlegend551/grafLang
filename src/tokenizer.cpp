@@ -69,6 +69,38 @@ char Tokenizer::peek()
     return '\0';
 }
 
+
+void Tokenizer::tokenize_numeric_literal()
+{
+    literal_value = "";
+    literal_value.push_back(character);
+
+    // Get integer part.
+    while(isdigit(get()))
+    {
+        literal_value.push_back(advance());
+    }
+
+    // If decimal point not found -> integer.
+    if(get() != '.')
+    {
+        current_token = create_token(GENERIC_LITERAL,
+                                        INTEGER_LITERAL,
+                                        literal_value);
+    }
+
+    else
+    {
+        do { literal_value.push_back(advance()); }
+        while(isdigit(get()));
+
+        current_token = create_token(GENERIC_LITERAL,
+                                        FLOAT_LITERAL,
+                                        literal_value);
+    }
+}
+
+
 char Tokenizer::get_escape_character()
 {
     char escape_code = advance();
@@ -92,14 +124,34 @@ char Tokenizer::get_escape_character()
     }
 }
 
+
+void Tokenizer::tokenize_string_literal()
+{
+    literal_value = "";
+
+    while(get() != '"')
+    {
+        if(get() == '\\')
+        {
+            advance();
+            literal_value.push_back(get_escape_character());
+        }
+        else
+            literal_value.push_back(advance());
+    }
+
+    advance();
+    current_token = create_token(GENERIC_LITERAL,
+                                    STRING_LITERAL,
+                                    literal_value);
+}
+
+
 std::vector<Token> Tokenizer::tokenize()
 {
     std::vector<Token> token_stream;
     character_stream.push_back('\0');
 
-    char character;
-    Token current_token;
-    std::string literal_value;
 
     while(get() != '\0')
     {
@@ -113,29 +165,7 @@ std::vector<Token> Tokenizer::tokenize()
         // Numeric literal.
         if(isdigit(character))
         {
-            literal_value.push_back(character);
-
-            // Get integer part.
-            while(isdigit(get()))
-            {
-                literal_value.push_back(advance());
-            }
-            // If decimal point not found -> integer.
-            if(get() != '.')
-            {
-                current_token = create_token(GENERIC_LITERAL,
-                                                INTEGER_LITERAL,
-                                                literal_value);
-            }
-            else
-            {
-                do { literal_value.push_back(advance()); }
-                while(isdigit(get()));
-
-                current_token = create_token(GENERIC_LITERAL,
-                                                FLOAT_LITERAL,
-                                                literal_value);
-            }
+            tokenize_numeric_literal();
         }
 
         switch(character)
@@ -143,23 +173,7 @@ std::vector<Token> Tokenizer::tokenize()
 
         // String literal.
         case '"':
-            literal_value = "";
-
-            while(get() != '"')
-            {
-                if(get() == '\\')
-                {
-                    advance();
-                    literal_value.push_back(get_escape_character());
-                }
-                else
-                    literal_value.push_back(advance());
-            }
-
-            advance();
-            current_token = create_token(GENERIC_LITERAL,
-                                            STRING_LITERAL,
-                                            literal_value);
+            
             break;
             
         // Arithmetic operators.
