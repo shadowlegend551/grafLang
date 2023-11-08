@@ -11,7 +11,6 @@ class Tokenizer
         std::string character_stream;
         char character;
         Token current_token;
-        std::string literal_value;
 
         unsigned int i;
 

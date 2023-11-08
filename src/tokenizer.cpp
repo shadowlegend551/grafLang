@@ -72,7 +72,7 @@ char Tokenizer::peek()
 
 void Tokenizer::tokenize_numeric_literal()
 {
-    literal_value = "";
+    std::string literal_value = "";
     literal_value.push_back(character);
 
     // Get integer part.
@@ -127,7 +127,7 @@ char Tokenizer::get_escape_character()
 
 void Tokenizer::tokenize_string_literal()
 {
-    literal_value = "";
+    std::string literal_value = "";
 
     while(get() != '"')
     {
@@ -152,10 +152,13 @@ std::vector<Token> Tokenizer::tokenize()
     std::vector<Token> token_stream;
     character_stream.push_back('\0');
 
+    char next_char;
+
 
     while(get() != '\0')
     {
         character = advance();
+        char next_character = get();
 
         // Skip whitespace.
         if(character == ' ')
@@ -173,16 +176,22 @@ std::vector<Token> Tokenizer::tokenize()
 
         // String literal.
         case '"':
-            
+            tokenize_string_literal();
             break;
             
         // Arithmetic operators.
         case '+':
-            if(get() == '=')  // +=
+
+            if(next_character == '=')  // +=
             {
                 current_token = create_token(GENERIC_BINARY_OPERATOR,
                                                 ASSIGNMENT_ADD);
                 advance();
+            }
+            else if(next_character == '+')
+            {
+                current_token = create_token(GENERIC_BINARY_OPERATOR,
+                                                LOGICAL_INCREMENT);
             }
             else  // +
             {
@@ -192,10 +201,16 @@ std::vector<Token> Tokenizer::tokenize()
             break;
 
         case '-':
-            if(get() == '=')  // -=
+            if(next_character == '=')  // -=
             {
                 current_token = create_token(GENERIC_BINARY_OPERATOR,
                                                 ASSIGNMENT_SUB);
+                advance();
+            }
+            else if(next_character == '-')  // --
+            {
+                current_token = create_token(GENERIC_BINARY_OPERATOR,
+                                                LOGICAL_DECREMENT);
                 advance();
             }
             else  // -
@@ -206,7 +221,7 @@ std::vector<Token> Tokenizer::tokenize()
             break;
 
         case '*':
-            if(get() == '=')  // *=
+            if(next_character == '=')  // *=
             {
                 current_token = create_token(GENERIC_BINARY_OPERATOR,
                                                 ASSIGNMENT_MUL);
@@ -220,13 +235,13 @@ std::vector<Token> Tokenizer::tokenize()
             break;
 
         case '/':
-            if(get() == '=')  // /=
+            if(next_character == '=')  // /=
             {
                 current_token = create_token(GENERIC_BINARY_OPERATOR,
                                                 ASSIGNMENT_DIV);
                 advance();
             }
-            else if(get() == '*')  // /* comment */
+            else if(next_character == '*')  // /* comment */
             {
                 do { advance(); }
                 while(get() != '*' && peek() != '/');

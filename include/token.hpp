@@ -10,7 +10,7 @@ typedef union TokenValue
 {
     int integer_literal;
     double float_literal;
-    const char* string_literal;
+    char* string_literal;
 
 } TokenValue;
 
