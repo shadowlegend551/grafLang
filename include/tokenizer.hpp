@@ -24,6 +24,8 @@ class Tokenizer
 
         void tokenize_numeric_literal();
 
+        void tokenize_identifier_literal();
+
         char get_escape_character();
 
         void tokenize_string_literal();

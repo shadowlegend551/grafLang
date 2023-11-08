@@ -23,6 +23,7 @@ typedef enum TokenType
     GENERIC_BOOL,
 
     // Booleans.
+    BOOL_NULL,                  // Null
     BOOL_TRUE,                 // True
     BOOL_FALSE,                // False
 
@@ -114,7 +115,6 @@ typedef enum TokenType
     GENERIC_MISC,
 
     // Misc.
-    NONETYPE,                  // Null
     Q_MARK,                    // ?
     BACKSLASH,                 // \
 

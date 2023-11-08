@@ -72,7 +72,7 @@ char Tokenizer::peek()
 
 void Tokenizer::tokenize_numeric_literal()
 {
-    std::string literal_value = "";
+    std::string literal_value;
     literal_value.push_back(character);
 
     // Get integer part.
@@ -97,6 +97,40 @@ void Tokenizer::tokenize_numeric_literal()
         current_token = create_token(GENERIC_LITERAL,
                                         FLOAT_LITERAL,
                                         literal_value);
+    }
+}
+
+
+void Tokenizer::tokenize_identifier_literal()
+{
+    std::string literal_value;
+    literal_value.push_back(character);
+
+    while(isalpha(get()) || isdigit(get()) || get() == '_')
+    {
+        literal_value.push_back(advance());
+    }
+
+    if(literal_value == "true")
+    {
+        current_token = create_token(GENERIC_BOOL, BOOL_TRUE);
+    }
+
+    else if(literal_value == "false")
+    {
+        current_token = create_token(GENERIC_BOOL, BOOL_FALSE);
+    }
+
+    else if(literal_value == "null")
+    {
+        current_token = create_token(GENERIC_BOOL, BOOL_NULL);
+    }
+
+    else
+    {
+        current_token = create_token(GENERIC_LITERAL,
+                                    IDENTIFIER_LITERAL,
+                                    literal_value);
     }
 }
 
@@ -169,6 +203,13 @@ std::vector<Token> Tokenizer::tokenize()
         if(isdigit(character))
         {
             tokenize_numeric_literal();
+            goto append_token;
+        }
+
+        else if(isalpha(character))
+        {
+            tokenize_identifier_literal();
+            goto append_token;
         }
 
         switch(character)
@@ -267,7 +308,9 @@ std::vector<Token> Tokenizer::tokenize()
                                             ARITHMETIC_MOD);
             break;
         }
-        token_stream.push_back(current_token);
+
+        append_token:
+            token_stream.push_back(current_token);
     }
 
     return token_stream;
