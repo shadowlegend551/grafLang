@@ -42,6 +42,7 @@ char Tokenizer::advance()
     if(character != '\0')
         i++;
 
+    // Implicitly return null if end of string reached.
     return character;
 }
 
@@ -237,8 +238,16 @@ std::vector<Token> Tokenizer::tokenize()
 
         // Logical operators.
         case '!':
-            current_token = create_token(GENERIC_UNARY_OPERATOR,
-                                            LOGICAL_NOT);
+            if(next_character == '=')  // !=
+            {
+                current_token = create_token(GENERIC_BINARY_OPERATOR,
+                                                ASSERT_NE);
+            }
+            else  // !
+            {
+                current_token = create_token(GENERIC_UNARY_OPERATOR,
+                                                LOGICAL_NOT);
+            }
             break;
 
         case '&':
