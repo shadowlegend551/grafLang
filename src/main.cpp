@@ -8,7 +8,7 @@
 
 int main()
 {
-    Tokenizer x = Tokenizer("null");
+    Tokenizer x = Tokenizer("& + 67.5");
     std::vector<Token> y = x.tokenize();
     TokenValue z = y[0].literal_value;
     

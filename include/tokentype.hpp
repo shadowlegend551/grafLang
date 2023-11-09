@@ -23,9 +23,9 @@ typedef enum TokenType
     GENERIC_BOOL,
 
     // Booleans.
-    BOOL_NULL,                 // Null
-    BOOL_TRUE,                 // True
-    BOOL_FALSE,                // False
+    BOOL_NULL,                 // null
+    BOOL_TRUE,                 // true
+    BOOL_FALSE,                // false
 
 /* ----------------------------*/
 

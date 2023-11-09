@@ -235,9 +235,26 @@ std::vector<Token> Tokenizer::tokenize()
         switch(character)
         {
 
+        // Logical operators.
         case '!':
             current_token = create_token(GENERIC_UNARY_OPERATOR,
                                             LOGICAL_NOT);
+            break;
+
+        case '&':
+            current_token = create_token(GENERIC_BINARY_OPERATOR,
+                                            LOGICAL_AND);
+            break;
+
+        case '|':
+            current_token = create_token(GENERIC_BINARY_OPERATOR,
+                                            LOGICAL_OR);
+            break;
+
+        case '^':
+            current_token = create_token(GENERIC_BINARY_OPERATOR,
+                                            LOGICAL_XOR);
+            break;
 
         // String literal.
         case '"':
@@ -291,6 +308,11 @@ std::vector<Token> Tokenizer::tokenize()
                 current_token = create_token(GENERIC_BINARY_OPERATOR,
                                                 ASSIGNMENT_MUL);
             advance();
+            }
+            else if(next_character == '*')  // **
+            {
+                current_token = create_token(GENERIC_BINARY_OPERATOR,
+                                                ARITHMETIC_EXP);
             }
             else  // *
             {
