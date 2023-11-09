@@ -23,9 +23,21 @@ typedef enum TokenType
     GENERIC_BOOL,
 
     // Booleans.
-    BOOL_NULL,                  // Null
+    BOOL_NULL,                 // Null
     BOOL_TRUE,                 // True
     BOOL_FALSE,                // False
+
+/* ----------------------------*/
+
+    // Generic keyword type.
+    GENERIC_KEYWORD,
+
+    // Control keywords.
+    KEYWORD_IF,                // if
+    KEYWORD_WHILE,             // while
+    KEYWORD_FOR,               // for
+    KEYWORD_BREAK,             // break
+    KEYWORD_CONTINUE,          // continue
 
 /* ----------------------------*/
 

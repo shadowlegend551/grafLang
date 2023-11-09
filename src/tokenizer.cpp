@@ -126,6 +126,26 @@ void Tokenizer::tokenize_identifier_literal()
         current_token = create_token(GENERIC_BOOL, BOOL_NULL);
     }
 
+    else if(literal_value == "if")
+    {
+        current_token = create_token(GENERIC_KEYWORD, KEYWORD_IF);
+    }
+
+    else if(literal_value == "while")
+    {
+        current_token = create_token(GENERIC_KEYWORD, KEYWORD_WHILE);
+    }
+
+    else if(literal_value == "for")
+    {
+        current_token = create_token(GENERIC_KEYWORD, KEYWORD_FOR);
+    }
+
+    else if(literal_value == "break")
+    {
+        current_token = create_token(GENERIC_KEYWORD, KEYWORD_BREAK);
+    }
+
     else
     {
         current_token = create_token(GENERIC_LITERAL,
