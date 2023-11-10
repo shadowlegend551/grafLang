@@ -357,6 +357,8 @@ std::vector<Token> Tokenizer::tokenize()
                                             ARITHMETIC_MOD);
             break;
 
+
+        // Assignment and comparison operators.
         case '=':
             if(next_character == '=')  // ==
             {
@@ -395,9 +397,38 @@ std::vector<Token> Tokenizer::tokenize()
                                                 ASSERT_GE);
             }
             break;
-        }
 
-        
+
+        // Grouping symbols
+        case '(':
+            current_token = create_token(GENERIC_GROUPING,
+                                                L_PAREN);
+            break;
+
+        case '[':
+            current_token = create_token(GENERIC_GROUPING,
+                                                L_SBRACKET);
+            break;
+
+        case '{':
+            current_token = create_token(GENERIC_GROUPING,
+                                                L_BRACKET);
+            break;
+
+        case ')':
+            current_token = create_token(GENERIC_GROUPING,
+                                                R_PAREN);
+            break;
+
+        case ']':
+            current_token = create_token(GENERIC_GROUPING,
+                                                R_SBRACKET);
+            break;
+
+        case '}':
+            current_token = create_token(GENERIC_GROUPING,
+                                                R_BRACKET);
+        }
 
         append_token:
             token_stream.push_back(current_token);
