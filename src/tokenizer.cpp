@@ -428,6 +428,39 @@ std::vector<Token> Tokenizer::tokenize()
         case '}':
             current_token = create_token(GENERIC_GROUPING,
                                                 R_BRACKET);
+            break;
+
+
+        // Separator symbols.
+        case '.':
+            current_token = create_token(GENERIC_SEPARATOR,
+                                                DOT);
+            break;
+
+        case ',':
+            current_token = create_token(GENERIC_SEPARATOR,
+                                                COMMA);
+            break;
+
+        case ':':
+            current_token = create_token(GENERIC_SEPARATOR,
+                                                COLON);
+            break;
+
+        case ';':
+            current_token = create_token(GENERIC_SEPARATOR,
+                                                SEMICOLON);
+            break;
+
+        case '?':
+            current_token = create_token(GENERIC_MISC,
+                                                Q_MARK);
+            break;
+
+        case '\\':
+            current_token = create_token(GENERIC_MISC,
+                                                BACKSLASH);
+            break;
         }
 
         append_token:
