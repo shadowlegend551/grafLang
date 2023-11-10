@@ -8,10 +8,16 @@
 
 int main()
 {
-    Tokenizer x = Tokenizer("''Hello World''");
+    Tokenizer x = Tokenizer("");
     std::vector<Token> y = x.tokenize();
-    TokenValue z = y[0].literal_value;
+    printf("here\n");
     
-    printf("%s\n", z.string_literal);
+    for(Token token : y)
+    {
+        if(token.generic_type == ERROR_TYPE)
+        {
+            printf("%s\n", token.literal_value.string_literal);
+        }
+    }
     return 0;
 }

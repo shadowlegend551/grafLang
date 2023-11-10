@@ -133,6 +133,11 @@ typedef enum TokenType
 
 /* ----------------------------*/
 
+    // Error token.
+    ERROR_TYPE,
+
+/* ----------------------------*/
+
 } TokenType;
 
 #endif

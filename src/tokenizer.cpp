@@ -1,8 +1,9 @@
 #include <string>
 #include <vector>
 
-#include "../include/token.hpp"
 #include "../include/tokenizer.hpp"
+#include "../include/error.hpp"
+#include "../include/token.hpp"
 #include "../include/tokentype.hpp"
 
 
@@ -33,6 +34,7 @@ Tokenizer::Tokenizer(std::string input)
 {
     character_stream = input;
     i = 0;
+    lineno = 1;
 }
 
 
@@ -68,6 +70,49 @@ char Tokenizer::peek()
         return character_stream[i+1];
 
     return '\0';
+}
+
+
+Token Tokenizer::tokenize_error_token(Error error_code, char error_character,  std::string error_string)
+{
+    std::string error_message = "";
+    Token error_token;
+
+    switch(error_code)
+    {
+        case UNRECOGNIZED_TOKEN:
+            error_message.append("Error: unrecognized symbol: \"");
+            error_message.push_back(error_character);
+            error_message.push_back('"');
+            error_message.append(" on line ")
+                         .append(std::to_string(lineno));
+
+            error_token = create_token(ERROR_TYPE,
+                                            ERROR_TYPE,
+                                            error_message);
+            break;
+            
+
+        case MISSING_QUOTE:
+            error_message.append("Error: missing quote after string: \"")
+                         .append(error_string)
+                         .append(" Suggestion: (Add: \" / ')")
+                         .append(" on line ")
+                         .append(std::to_string(lineno));
+
+            error_token = create_token(ERROR_TYPE,
+                                            ERROR_TYPE,
+                                            error_message);
+            break;
+        
+        default:
+            error_token = create_token(ERROR_TYPE,
+                                            ERROR_TYPE,
+                                            "Unknown error.");
+            break;
+    }
+
+    return error_token;
 }
 
 
@@ -127,6 +172,7 @@ void Tokenizer::tokenize_identifier_literal()
         current_token = create_token(GENERIC_BOOL, BOOL_NULL);
     }
 
+    // Handles also keywords.
     else if(literal_value == "if")
     {
         current_token = create_token(GENERIC_KEYWORD, KEYWORD_IF);
@@ -194,6 +240,13 @@ void Tokenizer::tokenize_string_literal()
             advance();
             literal_value.push_back(get_escape_character());
         }
+        else if(!get())
+        {
+            current_token = tokenize_error_token(MISSING_QUOTE,
+                                                    '\0', literal_value);
+            return;
+
+        }
         else
             literal_value.push_back(advance());
     }
@@ -221,6 +274,12 @@ std::vector<Token> Tokenizer::tokenize()
         // Skip whitespace.
         if(character == ' ')
             continue;
+        
+        if(character == '\n')
+        {
+            lineno++;
+            continue;
+        }
 
 
         // Numeric literal.
@@ -471,6 +530,11 @@ std::vector<Token> Tokenizer::tokenize()
             current_token = create_token(GENERIC_MISC,
                                                 BACKSLASH);
             break;
+
+        // Invalid token.
+        default:
+            current_token = tokenize_error_token(UNRECOGNIZED_TOKEN,
+                                                    character, "");
         }
 
         append_token:

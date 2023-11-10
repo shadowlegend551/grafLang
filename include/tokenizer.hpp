@@ -4,6 +4,9 @@
 #include <string>
 #include <vector>
 
+#include "error.hpp"
+#include "token.hpp"
+
 
 class Tokenizer
 {
@@ -11,6 +14,7 @@ class Tokenizer
         std::string character_stream;
         char character;
         Token current_token;
+        int lineno;
 
         unsigned int i;
 
@@ -21,6 +25,8 @@ class Tokenizer
         char last();
 
         char peek();
+
+        Token tokenize_error_token( Error error_code, char error_character, std::string error_string);
 
         void tokenize_numeric_literal();
 

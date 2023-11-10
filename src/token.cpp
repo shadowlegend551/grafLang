@@ -29,6 +29,7 @@ Token create_token(TokenType generic_type,
         case STRING_LITERAL:
         case IDENTIFIER_LITERAL:
         case KEYWORD_LITERAL:
+        case ERROR_TYPE:
             value.string_literal = strdup(literal_value.c_str());
             token.literal_value = value;
             break;
