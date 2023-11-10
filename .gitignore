@@ -3,6 +3,6 @@
 __pycache__/
 venv/
 env/
-build/
+build/*.o
 main.exe
 main
