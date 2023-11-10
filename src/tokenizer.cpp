@@ -174,6 +174,9 @@ char Tokenizer::get_escape_character()
         case '"':
             return '"';
 
+        case '\'':
+            return '\'';
+
         default:
             return 0;
     }
@@ -184,7 +187,7 @@ void Tokenizer::tokenize_string_literal()
 {
     std::string literal_value = "";
 
-    while(get() != '"')
+    while(get() != character)
     {
         if(get() == '\\')
         {
@@ -227,11 +230,22 @@ std::vector<Token> Tokenizer::tokenize()
             goto append_token;
         }
 
-        else if(isalpha(character))
+
+        // Identifier literal. Checks for keywords
+        if(isalpha(character))
         {
             tokenize_identifier_literal();
             goto append_token;
         }
+
+
+        // String literal.
+        if(character == '"' || character == '\'')
+        {
+            tokenize_string_literal();
+            goto append_token;
+        }
+
 
         switch(character)
         {
@@ -265,10 +279,6 @@ std::vector<Token> Tokenizer::tokenize()
                                             LOGICAL_XOR);
             break;
 
-        // String literal.
-        case '"':
-            tokenize_string_literal();
-            break;
             
         // Arithmetic operators.
         case '+':

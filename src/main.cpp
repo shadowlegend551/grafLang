@@ -8,10 +8,10 @@
 
 int main()
 {
-    Tokenizer x = Tokenizer("!");
+    Tokenizer x = Tokenizer("''Hello World''");
     std::vector<Token> y = x.tokenize();
     TokenValue z = y[0].literal_value;
     
-    printf("%d\n", y[0].type);
+    printf("%s\n", z.string_literal);
     return 0;
 }
