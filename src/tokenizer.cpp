@@ -344,8 +344,6 @@ std::vector<Token> Tokenizer::tokenize()
 
                 advance();  // Skip *
                 advance();  // Skip /
-                break;
-                    
             }
             else  // /
             {
@@ -358,7 +356,48 @@ std::vector<Token> Tokenizer::tokenize()
             current_token = create_token(GENERIC_BINARY_OPERATOR,
                                             ARITHMETIC_MOD);
             break;
+
+        case '=':
+            if(next_character == '=')  // ==
+            {
+                current_token = create_token(GENERIC_BINARY_OPERATOR,
+                                                ASSIGNMENT);
+            }
+            else  // =
+            {
+                current_token = create_token(GENERIC_BINARY_OPERATOR,
+                                                ASSERT_EQ);
+            }
+            break;
+
+        case '<':
+            if(next_character == '=')  // <=
+            {
+                current_token = create_token(GENERIC_BINARY_OPERATOR,
+                                                ASSERT_LE);
+            }
+            else  // <
+            {
+                current_token = create_token(GENERIC_BINARY_OPERATOR,
+                                                ASSERT_LT);
+            }
+            break;
+
+        case '>':
+            if(next_character == '=')  // >=
+            {
+                current_token = create_token(GENERIC_BINARY_OPERATOR,
+                                                ASSERT_GE);
+            }
+            else  // >
+            {
+                current_token = create_token(GENERIC_BINARY_OPERATOR,
+                                                ASSERT_GE);
+            }
+            break;
         }
+
+        
 
         append_token:
             token_stream.push_back(current_token);
