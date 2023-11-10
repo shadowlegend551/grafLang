@@ -124,6 +124,7 @@ typedef enum TokenType
 
 /* ----------------------------*/
 
+    // Generic miscellaneous type.
     GENERIC_MISC,
 
     // Misc.
