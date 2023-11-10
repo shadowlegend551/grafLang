@@ -26,7 +26,9 @@ class Tokenizer
 
         char peek();
 
-        Token tokenize_error_token( Error error_code, char error_character, std::string error_string);
+        Token tokenize_error_token(Error error_code,
+                                    char error_character,
+                                    std::string error_string);
 
         void tokenize_numeric_literal();
 

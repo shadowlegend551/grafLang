@@ -8,7 +8,7 @@
 
 int main()
 {
-    Tokenizer x = Tokenizer("");
+    Tokenizer x = Tokenizer("$\n\" Hello world");
     std::vector<Token> y = x.tokenize();
     printf("here\n");
     

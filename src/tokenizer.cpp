@@ -73,44 +73,17 @@ char Tokenizer::peek()
 }
 
 
-Token Tokenizer::tokenize_error_token(Error error_code, char error_character,  std::string error_string)
+// Move error handling to a separate function.
+Token Tokenizer::tokenize_error_token(Error error_code,
+                                        char error_character, 
+                                        std::string error_string)
 {
-    std::string error_message = "";
-    Token error_token;
-
-    switch(error_code)
-    {
-        case UNRECOGNIZED_TOKEN:
-            error_message.append("Error: unrecognized symbol: \"");
-            error_message.push_back(error_character);
-            error_message.push_back('"');
-            error_message.append(" on line ")
-                         .append(std::to_string(lineno));
-
-            error_token = create_token(ERROR_TYPE,
-                                            ERROR_TYPE,
-                                            error_message);
-            break;
-            
-
-        case MISSING_QUOTE:
-            error_message.append("Error: missing quote after string: \"")
-                         .append(error_string)
-                         .append(" Suggestion: (Add: \" / ')")
-                         .append(" on line ")
-                         .append(std::to_string(lineno));
-
-            error_token = create_token(ERROR_TYPE,
-                                            ERROR_TYPE,
-                                            error_message);
-            break;
-        
-        default:
-            error_token = create_token(ERROR_TYPE,
-                                            ERROR_TYPE,
-                                            "Unknown error.");
-            break;
-    }
+    Token error_token = create_token(ERROR_TYPE,
+                                        ERROR_TYPE,
+                                        get_error_message(error_code,
+                                                            error_character,
+                                                            error_string,
+                                                            lineno));
 
     return error_token;
 }
