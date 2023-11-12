@@ -12,9 +12,12 @@ class Tokenizer
 {
     private:
         std::string character_stream;
-        char character;
         Token current_token;
+
+        char character;
+        std::string line;
         int lineno;
+        int lineindex;
 
         unsigned int i;
 
