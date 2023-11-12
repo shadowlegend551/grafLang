@@ -73,8 +73,7 @@ char Tokenizer::peek()
 }
 
 
-// Move error handling to a separate function.
-Token Tokenizer::tokenize_error_token(Error error_code,
+Token Tokenizer::getErrorToken(Error error_code,
                                         char error_character, 
                                         std::string error_string)
 {
@@ -89,7 +88,7 @@ Token Tokenizer::tokenize_error_token(Error error_code,
 }
 
 
-void Tokenizer::tokenize_numeric_literal()
+void Tokenizer::tokenizeNumericLiteral()
 {
     std::string literal_value;
     literal_value.push_back(character);
@@ -120,7 +119,7 @@ void Tokenizer::tokenize_numeric_literal()
 }
 
 
-void Tokenizer::tokenize_identifier_literal()
+void Tokenizer::tokenizeIdentifierLiteral()
 {
     std::string literal_value;
     literal_value.push_back(character);
@@ -175,7 +174,7 @@ void Tokenizer::tokenize_identifier_literal()
 }
 
 
-char Tokenizer::get_escape_character()
+char Tokenizer::getEscapeCharacter()
 {
     char escape_code = advance();
 
@@ -202,7 +201,7 @@ char Tokenizer::get_escape_character()
 }
 
 
-void Tokenizer::tokenize_string_literal()
+void Tokenizer::tokenizeStringLiteral()
 {
     std::string literal_value = "";
 
@@ -211,11 +210,11 @@ void Tokenizer::tokenize_string_literal()
         if(get() == '\\')
         {
             advance();
-            literal_value.push_back(get_escape_character());
+            literal_value.push_back(getEscapeCharacter());
         }
         else if(!get())
         {
-            current_token = tokenize_error_token(MISSING_QUOTE,
+            current_token = getErrorToken(MISSING_QUOTE,
                                                     '\0', literal_value);
             return;
 
@@ -258,7 +257,7 @@ std::vector<Token> Tokenizer::tokenize()
         // Numeric literal.
         if(isdigit(character))
         {
-            tokenize_numeric_literal();
+            tokenizeNumericLiteral();
             goto append_token;
         }
 
@@ -266,7 +265,7 @@ std::vector<Token> Tokenizer::tokenize()
         // Identifier literal. Checks for keywords
         if(isalpha(character))
         {
-            tokenize_identifier_literal();
+            tokenizeIdentifierLiteral();
             goto append_token;
         }
 
@@ -274,7 +273,7 @@ std::vector<Token> Tokenizer::tokenize()
         // String literal.
         if(character == '"' || character == '\'')
         {
-            tokenize_string_literal();
+            tokenizeStringLiteral();
             goto append_token;
         }
 
@@ -506,7 +505,7 @@ std::vector<Token> Tokenizer::tokenize()
 
         // Invalid token.
         default:
-            current_token = tokenize_error_token(UNRECOGNIZED_TOKEN,
+            current_token = getErrorToken(UNRECOGNIZED_TOKEN,
                                                     character, "");
         }
 

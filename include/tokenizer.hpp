@@ -26,17 +26,17 @@ class Tokenizer
 
         char peek();
 
-        Token tokenize_error_token(Error error_code,
-                                    char error_character,
-                                    std::string error_string);
+        Token getErrorToken(Error error_code,
+                                char error_character,
+                                std::string error_string);
 
-        void tokenize_numeric_literal();
+        void tokenizeNumericLiteral();
 
-        void tokenize_identifier_literal();
+        void tokenizeIdentifierLiteral();
 
-        char get_escape_character();
+        char getEscapeCharacter();
 
-        void tokenize_string_literal();
+        void tokenizeStringLiteral();
 
     public:
         std::vector<Token> tokenize();
