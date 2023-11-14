@@ -5,11 +5,15 @@
 #include "../include/tokentype.hpp"
 
 std::string get_error_message(Error error_code,
-                        char error_character,
-                        std::string error_string,
-                        int lineno)
+                                std::string line,
+                                int lineno,
+                                int lineindex,
+                                char error_character,
+                                std::string erroneous_string)
 {
     std::string error_message = "";
+    std::string place = std::to_string(lineno) + ':' + std::to_string(lineindex);
+    std::string specific_error = "";
 
     switch(error_code)
     {
@@ -24,7 +28,7 @@ std::string get_error_message(Error error_code,
 
         case MISSING_QUOTE:
             error_message.append("Error: missing quote after string: \"")
-                         .append(error_string)
+                         .append(erroneous_string)
                          .append(". Suggestion: (Add: \" / ')")
                          .append(" on line ")
                          .append(std::to_string(lineno));

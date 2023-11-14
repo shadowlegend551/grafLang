@@ -17,7 +17,7 @@ class Tokenizer
         char character;
         std::string line;
         int lineno;
-        int lineindex;
+        int line_index;
 
         unsigned int i;
 
@@ -28,6 +28,8 @@ class Tokenizer
         char last();
 
         char peek();
+
+        void getLine();
 
         Token getErrorToken(Error error_code,
                                 char error_character,

@@ -9,7 +9,7 @@
     for ease of use and extension.
     Generic types (e.g. UNARY_OPERATOR) are used to 
     mark the general type of a token to help with parsing.
-    I have defined them here together with the morespecific
+    I have defined them here together with the more specific
     types for the sake of coherence and because I don't want
     to include as many .hpp files.
 */

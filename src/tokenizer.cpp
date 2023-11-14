@@ -34,6 +34,7 @@ Tokenizer::Tokenizer(std::string input)
 {
     character_stream = input;
     i = 0;
+    line_index = 0;
     lineno = 1;
 }
 
@@ -43,6 +44,7 @@ char Tokenizer::advance()
     char character = character_stream[i];
     if(character != '\0')
         i++;
+        line_index++;
 
     // Implicitly return null if end of string reached.
     return character;
@@ -73,16 +75,33 @@ char Tokenizer::peek()
 }
 
 
+void Tokenizer::getLine()
+{
+    printf("here\n");
+    int i_offset = 0;
+    line = "";
+
+    char next_character = character_stream[i];
+    while(next_character != '\n' && next_character != ';' && next_character != '\0')
+    {
+        printf("%c\n", next_character);
+        line.push_back(next_character); // Finish this function.
+        i_offset++;
+        next_character = character_stream[i+i_offset];
+    }
+}
+
+
 Token Tokenizer::getErrorToken(Error error_code,
                                         char error_character, 
                                         std::string error_string)
 {
-    Token error_token = create_token(ERROR_TYPE,
+    Token error_token;/* = create_token(ERROR_TYPE,
                                         ERROR_TYPE,
                                         get_error_message(error_code,
                                                             error_character,
                                                             error_string,
-                                                            lineno));
+                                                            lineno));*/
 
     return error_token;
 }
@@ -196,7 +215,7 @@ char Tokenizer::getEscapeCharacter()
             return '\'';
 
         default:
-            return 0;
+            return escape_code;
     }
 }
 
@@ -236,6 +255,7 @@ std::vector<Token> Tokenizer::tokenize()
     character_stream.push_back('\0');
 
     char next_char;
+    getLine();
 
 
     while(get() != '\0')
@@ -247,9 +267,10 @@ std::vector<Token> Tokenizer::tokenize()
         if(character == ' ')
             continue;
         
-        if(character == '\n')
+        if(character == '\n' || character == ';');
         {
             lineno++;
+            getLine();
             continue;
         }
 
