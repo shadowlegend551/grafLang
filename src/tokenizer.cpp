@@ -1,3 +1,4 @@
+#include <iostream>
 #include <string>
 #include <vector>
 
@@ -77,14 +78,12 @@ char Tokenizer::peek()
 
 void Tokenizer::getLine()
 {
-    printf("here\n");
     int i_offset = 0;
     line = "";
 
     char next_character = character_stream[i];
     while(next_character != '\n' && next_character != ';' && next_character != '\0')
     {
-        printf("%c\n", next_character);
         line.push_back(next_character); // Finish this function.
         i_offset++;
         next_character = character_stream[i+i_offset];
@@ -267,7 +266,7 @@ std::vector<Token> Tokenizer::tokenize()
         if(character == ' ')
             continue;
         
-        if(character == '\n' || character == ';');
+        if(character == '\n' || character == ';')
         {
             lineno++;
             getLine();

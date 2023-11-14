@@ -23,6 +23,7 @@ typedef struct Token
 
 } Token;
 
+
 Token create_token(TokenType generic_type,
                     TokenType type,
                     std::string literal_value = "");
