@@ -95,12 +95,17 @@ Token Tokenizer::getErrorToken(Error error_code,
                                         char error_character, 
                                         std::string error_string)
 {
-    Token error_token;/* = create_token(ERROR_TYPE,
+    std::string error_message = get_error_message(error_code,
+                                                    "test.gl",
+                                                    line,
+                                                    lineno,
+                                                    line_index,
+                                                    error_character,
+                                                    error_string);
+
+    Token error_token = create_token(ERROR_TYPE,
                                         ERROR_TYPE,
-                                        get_error_message(error_code,
-                                                            error_character,
-                                                            error_string,
-                                                            lineno));*/
+                                        error_message);
 
     return error_token;
 }
@@ -222,18 +227,22 @@ char Tokenizer::getEscapeCharacter()
 void Tokenizer::tokenizeStringLiteral()
 {
     std::string literal_value = "";
+    std::cout << line << std::endl;
 
     while(get() != character)
     {
+        std::cout << literal_value << std::endl;
+
         if(get() == '\\')
         {
             advance();
             literal_value.push_back(getEscapeCharacter());
         }
         else if(!get())
-        {
+        {   advance();
             current_token = getErrorToken(MISSING_QUOTE,
-                                                    '\0', literal_value);
+                                            character,
+                                            literal_value);
             return;
 
         }
@@ -269,6 +278,7 @@ std::vector<Token> Tokenizer::tokenize()
         if(character == '\n' || character == ';')
         {
             lineno++;
+            line_index = 1;
             getLine();
             continue;
         }
