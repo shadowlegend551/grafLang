@@ -79,6 +79,7 @@ char Tokenizer::peek()
 void Tokenizer::getLine()
 {
     int i_offset = 0;
+    std::cout << "Here\n" << std::endl;
     line = "";
 
     char next_character = character_stream[i];
@@ -227,11 +228,9 @@ char Tokenizer::getEscapeCharacter()
 void Tokenizer::tokenizeStringLiteral()
 {
     std::string literal_value = "";
-    std::cout << line << std::endl;
 
     while(get() != character)
     {
-        std::cout << literal_value << std::endl;
 
         if(get() == '\\')
         {
