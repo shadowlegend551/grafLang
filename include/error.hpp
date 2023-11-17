@@ -17,7 +17,6 @@ std::string get_error_message(Error error_code,
                                 std::string line,
                                 int lineno,
                                 int line_index,
-                                char error_character,
-                                std::string erroneous_string);
+                                char error_character);
 
 #endif

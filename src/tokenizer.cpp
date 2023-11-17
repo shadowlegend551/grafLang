@@ -93,17 +93,14 @@ void Tokenizer::getLine()
 }
 
 
-Token Tokenizer::getErrorToken(Error error_code,
-                                        char error_character, 
-                                        std::string error_string)
+Token Tokenizer::getErrorToken(Error error_code, char error_character)
 {
     std::string error_message = get_error_message(error_code,
                                                     "test.gl",
                                                     line,
                                                     lineno,
                                                     line_index,
-                                                    error_character,
-                                                    error_string);
+                                                    error_character);
 
     Token error_token = create_token(ERROR_TYPE,
                                         ERROR_TYPE,
@@ -240,9 +237,7 @@ void Tokenizer::tokenizeStringLiteral()
         }
         else if(!get() || get() == '\n')
         {   advance();
-            current_token = getErrorToken(MISSING_QUOTE,
-                                            character,
-                                            literal_value);
+            current_token = getErrorToken(MISSING_QUOTE, character);
             return;
 
         }
@@ -277,6 +272,7 @@ std::vector<Token> Tokenizer::tokenize()
         
         if(character == '\n' || character == ';')
         {
+            std::cout << "here" << std::endl;
             lineno++;
             line_index = 1;
             getLine();
@@ -535,8 +531,7 @@ std::vector<Token> Tokenizer::tokenize()
 
         // Invalid token.
         default:
-            current_token = getErrorToken(UNRECOGNIZED_TOKEN,
-                                                    character, "");
+            current_token = getErrorToken(UNRECOGNIZED_TOKEN, character);
         }
 
         append_token:

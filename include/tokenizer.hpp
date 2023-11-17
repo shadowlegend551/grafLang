@@ -31,9 +31,7 @@ class Tokenizer
 
         void getLine();
 
-        Token getErrorToken(Error error_code,
-                                char error_character,
-                                std::string error_string);
+        Token getErrorToken(Error error_code, char error_character);
 
         void tokenizeNumericLiteral();
 

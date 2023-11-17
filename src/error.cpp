@@ -1,18 +1,14 @@
+#include <iostream>
 #include <string>
 
 #include "../include/error.hpp"
 #include "../include/token.hpp"
 #include "../include/tokentype.hpp"
 
-std::string get_error_message(Error error_code,
-                                std::string file_name,
-                                std::string line,
-                                int lineno,
-                                int line_index,
-                                char error_character,
-                                std::string erroneous_string)
+std::string get_place(std::string file_name,
+                        int lineno,
+                        int line_index)
 {
-    std::string error_message = "Error: ";
     std::string place = "\n\tIn file: "
                         + file_name
                         + ": "
@@ -20,18 +16,37 @@ std::string get_error_message(Error error_code,
                         + ':'
                         + std::to_string(line_index);
 
+    return place;
+}
+
+
+std::string get_error_message(Error error_code,
+                                std::string file_name,
+                                std::string line,
+                                int lineno,
+                                int line_index,
+                                char error_character)
+{
+
+    std::string place = get_place(file_name,
+                                    lineno,
+                                    line_index);
+
+    std::string error_message = "Error: ";
+
     std::string specific_error = "Unknown error";
     std::string suggestion = "";
 
     std::string line_marker = "\n\t" + std::to_string(lineno) + "| ";
 
     // -2 to account for newline and vtab.
-    int line_marker_length = line_marker.size() - 2;
+    // -1 to account for line_index starting from one.
+    int line_marker_length = line_marker.size() - 2 - 1;
 
-    std::string erroneous_line = line_marker + erroneous_string;
+    std::string erroneous_line = line_marker + line;
     std::string error_pointer = "\n\t";
 
-    for(int i = 0; i < line_index+line_marker_length-2; i++)
+    for(int i = 0; i < line_index+line_marker_length; i++)
     {
         error_pointer.push_back('~');
     }
@@ -55,6 +70,7 @@ std::string get_error_message(Error error_code,
             break;
     }
 
+    std::cout << erroneous_line << std::endl;
     error_message.append(place)
                  .append(specific_error)
                  .append(erroneous_line)
