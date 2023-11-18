@@ -23,6 +23,8 @@ class Tokenizer
 
         char advance();
 
+        void advanceLine();
+
         char get();
 
         char last();
@@ -31,7 +33,7 @@ class Tokenizer
 
         void getLine();
 
-        Token getErrorToken(Error error_code, char error_character);
+        Token getErrorToken(Error error_code);
 
         void tokenizeNumericLiteral();
 

@@ -35,7 +35,7 @@ Tokenizer::Tokenizer(std::string input)
 {
     character_stream = input;
     i = 0;
-    line_index = 0;
+    line_index = 1;
     lineno = 1;
 }
 
@@ -49,6 +49,14 @@ char Tokenizer::advance()
 
     // Implicitly return null if end of string reached.
     return character;
+}
+
+
+void Tokenizer::advanceLine()
+{
+    lineno++;
+    line_index = 1;
+    getLine();
 }
 
 
@@ -88,19 +96,16 @@ void Tokenizer::getLine()
         i_offset++;
         next_character = character_stream[i+i_offset];
     }
-
-    std::cout << "Line: " << line << std::endl;
 }
 
 
-Token Tokenizer::getErrorToken(Error error_code, char error_character)
+Token Tokenizer::getErrorToken(Error error_code)
 {
     std::string error_message = get_error_message(error_code,
                                                     "test.gl",
                                                     line,
                                                     lineno,
-                                                    line_index,
-                                                    error_character);
+                                                    line_index);
 
     Token error_token = create_token(ERROR_TYPE,
                                         ERROR_TYPE,
@@ -217,6 +222,10 @@ char Tokenizer::getEscapeCharacter()
         case '\'':
             return '\'';
 
+        case '\n':
+            advanceLine();
+            return '\n';
+
         default:
             return escape_code;
     }
@@ -227,28 +236,28 @@ void Tokenizer::tokenizeStringLiteral()
 {
     std::string literal_value = "";
 
-    while(get() != character)
+    while(get() && get() != '\n' && get() != character)
     {
-
         if(get() == '\\')
         {
             advance();
             literal_value.push_back(getEscapeCharacter());
         }
-        else if(!get() || get() == '\n')
-        {   advance();
-            current_token = getErrorToken(MISSING_QUOTE, character);
-            return;
-
-        }
         else
             literal_value.push_back(advance());
     }
 
-    advance();
-    current_token = create_token(GENERIC_LITERAL,
+    if(get() == character)
+    {
+        current_token = create_token(GENERIC_LITERAL,
                                     STRING_LITERAL,
                                     literal_value);
+        advance();
+    }
+    else
+    {
+        current_token = getErrorToken(MISSING_QUOTE);
+    }
 }
 
 
@@ -272,10 +281,7 @@ std::vector<Token> Tokenizer::tokenize()
         
         if(character == '\n' || character == ';')
         {
-            std::cout << "here" << std::endl;
-            lineno++;
-            line_index = 1;
-            getLine();
+            advanceLine();
             continue;
         }
 
@@ -531,7 +537,7 @@ std::vector<Token> Tokenizer::tokenize()
 
         // Invalid token.
         default:
-            current_token = getErrorToken(UNRECOGNIZED_TOKEN, character);
+            current_token = getErrorToken(UNRECOGNIZED_TOKEN);
         }
 
         append_token:

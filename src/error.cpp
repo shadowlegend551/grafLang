@@ -19,62 +19,60 @@ std::string get_place(std::string file_name,
     return place;
 }
 
+std::string get_formatted_line(std::string line, int lineno)
+{
+    std::string formatted_line = "\n\t"
+                                 + std::to_string(lineno)
+                                 + "| "
+                                 + line;
 
-std::string get_error_message(Error error_code,
+    return formatted_line;
+}
+
+std::string get_error_squiggle(int lineno, int line_index)
+{
+    std::string squiggle = "\n\t";
+
+    int squiggle_length = std::to_string(lineno).length()
+                          + line_index;
+
+    for(int i = 0; i < squiggle_length; i++)
+    {
+        squiggle.push_back('~');
+    }
+    squiggle.push_back('^');
+
+    return squiggle;
+}
+
+std::string get_error_message(Error error_type,
                                 std::string file_name,
                                 std::string line,
                                 int lineno,
-                                int line_index,
-                                char error_character)
+                                int line_index)
 {
-
-    std::string place = get_place(file_name,
-                                    lineno,
-                                    line_index);
-
     std::string error_message = "Error: ";
-
-    std::string specific_error = "Unknown error";
     std::string suggestion = "";
 
-    std::string line_marker = "\n\t" + std::to_string(lineno) + "| ";
-
-    // -2 to account for newline and vtab.
-    // -1 to account for line_index starting from one.
-    int line_marker_length = line_marker.size() - 2 - 1;
-
-    std::string erroneous_line = line_marker + line;
-    std::string error_pointer = "\n\t";
-
-    for(int i = 0; i < line_index+line_marker_length; i++)
-    {
-        error_pointer.push_back('~');
-    }
-    error_pointer.append("^\n");
-
-    switch(error_code)
+    switch(error_type)
     {
         case UNRECOGNIZED_TOKEN:
-            specific_error = "\n\tUnrecognized symbol:\n";
-
+            error_message.append("Unrecognized symbol.");
             break;
-            
 
         case MISSING_QUOTE:
-            specific_error = "\n\tMissing quote after string:\n";
-            suggestion = "\n\tSuggestion: Add \" or '.";
-            
+            error_message.append("Missing quote.");
+            suggestion = "\n\n\tSuggestion: Add \" or '.";
             break;
-        
+
         default:
+            error_message.append("Unrecognized error.");
             break;
     }
 
-    std::cout << erroneous_line << std::endl;
-    error_message.append(place)
-                 .append(specific_error)
-                 .append(erroneous_line)
-                 .append(error_pointer)
+    error_message.append(get_place(file_name, lineno, line_index))
+                 .append(get_formatted_line(line, lineno))
+                 .append(get_error_squiggle(lineno, line_index))
                  .append(suggestion);
 
     return error_message;

@@ -12,11 +12,10 @@ typedef enum Error
 
 } Error;
 
-std::string get_error_message(Error error_code,
+std::string get_error_message(Error error_type,
                                 std::string filename,
                                 std::string line,
                                 int lineno,
-                                int line_index,
-                                char error_character);
+                                int line_index);
 
 #endif
