@@ -1,4 +1,3 @@
-#include <iostream>
 #include <string>
 
 #include "../include/error.hpp"
@@ -57,16 +56,16 @@ std::string get_error_message(Error error_type,
     switch(error_type)
     {
         case UNRECOGNIZED_TOKEN:
-            error_message.append("Unrecognized symbol.");
+            error_message.append("Unrecognized symbol");
             break;
 
         case MISSING_QUOTE:
-            error_message.append("Missing quote.");
+            error_message.append("Missing quote");
             suggestion = "\n\n\tSuggestion: Add \" or '.";
             break;
 
         default:
-            error_message.append("Unrecognized error.");
+            error_message.append("Unrecognized error");
             break;
     }
 

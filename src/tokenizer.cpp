@@ -31,9 +31,8 @@ int isdigit(char c)
 }
 
 
-Tokenizer::Tokenizer(std::string input)
+Tokenizer::Tokenizer()
 {
-    character_stream = input;
     i = 0;
     line_index = 1;
     lineno = 1;
@@ -102,7 +101,7 @@ void Tokenizer::getLine()
 Token Tokenizer::getErrorToken(Error error_code)
 {
     std::string error_message = get_error_message(error_code,
-                                                    "test.gl",
+                                                    file_name,
                                                     line,
                                                     lineno,
                                                     line_index);
@@ -261,10 +260,12 @@ void Tokenizer::tokenizeStringLiteral()
 }
 
 
-std::vector<Token> Tokenizer::tokenize()
+std::vector<Token> Tokenizer::tokenize(std::string raw_string, std::string source_file_name)
 {
     std::vector<Token> token_stream;
-    character_stream.push_back('\0');
+    raw_string.push_back('\0');
+    character_stream = raw_string;
+    file_name = source_file_name;
 
     char next_char;
     getLine();

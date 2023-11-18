@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <iostream>
+#include <string>
 #include <vector>
 
 #include "../include/asttypes.hpp"
@@ -8,15 +10,31 @@
 
 int main()
 {
-    Tokenizer x = Tokenizer("\"Hello World\\\nuwgiwfuw   hwifehwiu $\n#");
-    std::vector<Token> y = x.tokenize();
-    
-    for(Token token : y)
+    std::string input;
+    Tokenizer x = Tokenizer();
+    std::vector<Token> y;
+
+    printf("Exit with \"quit\", \"q\" or \"exit\"\n");
+    while(1)
     {
-        if(token.generic_type == ERROR_TYPE)
+        printf("> ");
+        std::getline(std::cin, input, '\n');
+        if(input == "quit" || input == "q" || input == "exit")
         {
-            printf("%s\n", token.literal_value.string_literal);
+            break;
+        }
+        
+        y = x.tokenize(input, "REPL");
+        
+        for(Token token : y)
+        {
+            if(token.generic_type == ERROR_TYPE)
+            {
+                printf("%s\n", token.literal_value.string_literal);
+            }
         }
     }
+
+    printf("Exiting...\n");
     return 0;
 }

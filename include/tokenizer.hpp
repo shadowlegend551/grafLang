@@ -12,6 +12,7 @@ class Tokenizer
 {
     private:
         std::string character_stream;
+        std::string file_name;
         Token current_token;
 
         char character;
@@ -44,9 +45,9 @@ class Tokenizer
         void tokenizeStringLiteral();
 
     public:
-        std::vector<Token> tokenize();
+        std::vector<Token> tokenize(std::string raw_string, std::string source_file_name);
     
-        Tokenizer(std::string input);
+        Tokenizer();
 };
 
 #endif
