@@ -20,7 +20,7 @@ class Tokenizer
         int lineno;
         int line_index;
 
-        unsigned int i;
+        unsigned int character_stream_iterator;
 
         char advance();
 

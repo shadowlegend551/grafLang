@@ -33,7 +33,7 @@ int isdigit(char c)
 
 Tokenizer::Tokenizer()
 {
-    i = 0;
+    character_stream_iterator = 0;
     line_index = 1;
     lineno = 1;
 }
@@ -41,9 +41,9 @@ Tokenizer::Tokenizer()
 
 char Tokenizer::advance()
 {
-    char character = character_stream[i];
+    char character = character_stream[character_stream_iterator];
     if(character != '\0')
-        i++;
+        character_stream_iterator++;
         line_index++;
 
     // Implicitly return null if end of string reached.
@@ -61,14 +61,14 @@ void Tokenizer::advanceLine()
 
 char Tokenizer::get()
 {
-    return character_stream[i];
+    return character_stream[character_stream_iterator];
 }
 
 
 char Tokenizer::last()
 {
-    if(i > 0)
-        return character_stream[i-1];
+    if(character_stream_iterator > 0)
+        return character_stream[character_stream_iterator-1];
 
     return '\0';
 }
@@ -76,8 +76,8 @@ char Tokenizer::last()
 
 char Tokenizer::peek()
 {
-    if(character_stream[i] != '\0')
-        return character_stream[i+1];
+    if(character_stream[character_stream_iterator] != '\0')
+        return character_stream[character_stream_iterator+1];
 
     return '\0';
 }
@@ -88,12 +88,12 @@ void Tokenizer::getLine()
     int i_offset = 0;
     line = "";
 
-    char next_character = character_stream[i];
+    char next_character = character_stream[character_stream_iterator];
     while(next_character != '\n' && next_character != '\0')
     {
         line.push_back(next_character); // Finish this function.
         i_offset++;
-        next_character = character_stream[i+i_offset];
+        next_character = character_stream[character_stream_iterator+i_offset];
     }
 }
 
@@ -262,19 +262,23 @@ void Tokenizer::tokenizeStringLiteral()
 
 std::vector<Token> Tokenizer::tokenize(std::string raw_string, std::string source_file_name)
 {
+    character_stream_iterator = 0;
+    line_index = 1;
+    lineno = 1;
     std::vector<Token> token_stream;
+
     raw_string.push_back('\0');
     character_stream = raw_string;
     file_name = source_file_name;
 
-    char next_char;
+    char next_character;
     getLine();
 
 
     while(get() != '\0')
     {
         character = advance();
-        char next_character = get();
+        next_character = get();
 
         // Skip whitespace.
         if(character == ' ')
