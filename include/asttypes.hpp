@@ -16,6 +16,12 @@ typedef enum AstExpressionType
 typedef struct AstNode AstNode;
 
 
+typedef struct LiteralExpression
+{
+    Token expr;
+} LiteralExpression;
+
+
 typedef struct UnaryExpression
 {
     Token oper;
@@ -35,6 +41,7 @@ typedef struct BinaryExpression
 
 typedef union AstExpression
 {
+    LiteralExpression literal_expression;
     UnaryExpression unary_expression;
     BinaryExpression binary_expression;
 
