@@ -9,18 +9,42 @@
     for ease of use and extension.
     Generic types (e.g. UNARY_OPERATOR) are used to 
     mark the general type of a token to help with parsing.
-    I have defined them here together with the more specific
-    types for the sake of coherence and because I don't want
-    to include as many .hpp files.
 */
+
+
+typedef enum GenericTokenType
+{
+    // Generic boolean type.
+    GENERIC_BOOL,
+
+    // Generic keyword type.
+    GENERIC_KEYWORD,
+
+    // Generic literal type.
+    GENERIC_LITERAL,
+
+    // Generic unary operator type. Usage: <operator> <expr>.
+    GENERIC_UNARY_OPERATOR,
+
+    // Generic binary operator type. Usage: <expr> <operator> <expr>.
+    GENERIC_BINARY_OPERATOR,
+
+    // Generic grouping type.
+    GENERIC_GROUPING,
+
+    // Generic separator type.
+    GENERIC_SEPARATOR,
+
+    // Generic miscellaneous type.
+    GENERIC_MISC,
+
+} GenericTokenType;
+
 
 typedef enum TokenType
 {
 
 /* ----------------------------*/
-
-    // Generic boolean type.
-    GENERIC_BOOL,
 
     // Booleans.
     BOOL_NULL,                 // null
@@ -28,9 +52,6 @@ typedef enum TokenType
     BOOL_FALSE,                // false
 
 /* ----------------------------*/
-
-    // Generic keyword type.
-    GENERIC_KEYWORD,
 
     // Control keywords.
     KEYWORD_IF,                // if
@@ -41,9 +62,6 @@ typedef enum TokenType
 
 /* ----------------------------*/
 
-    // Generic literal type.
-    GENERIC_LITERAL,
-
     // Literal values.
     INTEGER_LITERAL,           // e.g. 3
     FLOAT_LITERAL,             // e.g. 3.5
@@ -53,18 +71,12 @@ typedef enum TokenType
 
 /* ----------------------------*/
 
-    // Generic unary operator type. Usage: <operator> <expr>.
-    GENERIC_UNARY_OPERATOR,
-
     // Logical operators.
     LOGICAL_NOT,               // !
     LOGICAL_INCREMENT,         // ++ (only prefix)
     LOGICAL_DECREMENT,         // -- (only prefix)
 
 /* ----------------------------*/
-
-    // Generic binary operator type. Usage: <expr> <operator> <expr>.
-    GENERIC_BINARY_OPERATOR,
 
     // Logical operators.
     LOGICAL_AND,               // &
@@ -96,9 +108,6 @@ typedef enum TokenType
 
 /* ----------------------------*/
 
-    // Generic grouping type.
-    GENERIC_GROUPING,
-
     // Grouping.
     L_PAREN,                   // (
     L_SBRACKET,                // [
@@ -113,9 +122,6 @@ typedef enum TokenType
 
 /* ----------------------------*/
 
-    // Generic separator type.
-    GENERIC_SEPARATOR,
-
     // Separators.
     DOT,                       // .
     COMMA,                     // ,
@@ -123,9 +129,6 @@ typedef enum TokenType
     SEMICOLON,                 // ;
 
 /* ----------------------------*/
-
-    // Generic miscellaneous type.
-    GENERIC_MISC,
 
     // Misc.
     Q_MARK,                    // ?

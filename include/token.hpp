@@ -17,7 +17,7 @@ typedef union TokenValue
 
 typedef struct Token
 {
-    TokenType generic_type;
+    GenericTokenType generic_type;
     TokenType type;
     TokenValue literal_value;
 
