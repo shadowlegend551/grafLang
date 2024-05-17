@@ -21,6 +21,7 @@ int main()
         std::getline(std::cin, input, '\n');
         if(input == "quit" || input == "q" || input == "exit")
         {
+            printf("Exiting...\n");
             break;
         }
         
@@ -35,6 +36,5 @@ int main()
         }
     }
 
-    printf("Exiting...\n");
     return 0;
 }
