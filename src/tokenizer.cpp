@@ -106,7 +106,7 @@ Token Tokenizer::getErrorToken(Error error_code)
                                                     lineno,
                                                     line_index);
 
-    Token error_token = create_token(ERROR_TYPE,
+    Token error_token = create_token(GENERIC_ERROR_TYPE,
                                         ERROR_TYPE,
                                         error_message);
 

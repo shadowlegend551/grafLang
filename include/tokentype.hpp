@@ -38,6 +38,8 @@ typedef enum GenericTokenType
     // Generic miscellaneous type.
     GENERIC_MISC,
 
+    GENERIC_ERROR_TYPE,
+
 } GenericTokenType;
 
 

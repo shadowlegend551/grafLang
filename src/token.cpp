@@ -4,7 +4,7 @@
 #include "../include/token.hpp"
 #include "../include/tokentype.hpp"
 
-Token create_token(TokenType generic_type,
+Token create_token(GenericTokenType generic_type,
                     TokenType type,
                     std::string literal_value)
 {
