@@ -29,7 +29,7 @@ int main()
         
         for(Token token : y)
         {
-            if(token.generic_type == ERROR_TYPE)
+            if(token.generic_type == GENERIC_ERROR_TYPE)
             {
                 printf("%s\n", token.literal_value.string_literal);
             }
